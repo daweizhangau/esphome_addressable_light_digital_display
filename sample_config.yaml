@@ -1,0 +1,72 @@
+esphome:
+  name: digital-clock-v3
+  platform: ESP32
+  board: esp32dev
+  includes:
+    - light_display_v2.h
+
+# ...
+
+i2c:
+  sda: 19
+  scl: 18
+  scan: true
+  id: bus_a
+
+
+sensor:
+  - platform: bh1750
+    id: illuminance
+    # name: "BH1750 Illuminance"
+    internal: true
+    address: 0x23
+    update_interval: 3s
+    on_value:
+      lambda: |-
+        const float min_brightness = 0.3;
+        const float min_lux = 5.0;
+        const float max_lux = 30.0;
+        const float tolerance = 0.05;
+        const float brightness = (min(max_lux, max(min_lux, x)) - min_lux) / (max_lux - min_lux);
+        const float bound_brightness = fmin(1.0f, max(min_brightness, brightness));
+        const float old_brightness = id(digital_clock_light_state).remote_values.get_brightness();
+        ESP_LOGD("bh1750", "x=%f, brightness=%f, bound_brightness=%f, brightness_delta_abs=%f",x, brightness, bound_brightness, abs(old_brightness - bound_brightness));
+        if(abs(old_brightness - bound_brightness) > tolerance) {
+          ESP_LOGD("bh1750", "Adjusting brightness");
+          auto call = id(digital_clock_light_state).make_call();
+          call.set_brightness(bound_brightness);
+          call.perform();
+        }
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: "AEST-10AEDT-11,M10.1.0/02:00:00,M4.1.0/03:00:00"
+
+light:
+  - platform: fastled_clockless
+    chipset: WS2812B
+    pin: 33
+    num_leds: 30
+    rgb_order: GRB
+    output_id: digital_clock_light_output
+    id: digital_clock_light_state
+    name: digital_clock_light
+    default_transition_length: 0s
+    # restore_mode: ALWAYS_ON
+    icon: "mdi:clock-digital"
+  
+custom_component:
+- id: display
+  lambda: |-
+    auto display = new LightDigitDisplay();
+    display->set_light_output(digital_clock_light_output);
+    display->set_light_state(digital_clock_light_state);
+    display->set_update_interval(500);
+    display->set_writer([=](LightDigitDisplay &it) -> void {
+      if (millis() % 1000 < 500)
+        it.strftime("%H:%M", sntp_time->now());
+      else
+        it.strftime("%H %M", sntp_time->now());
+    });
+    return {display};
