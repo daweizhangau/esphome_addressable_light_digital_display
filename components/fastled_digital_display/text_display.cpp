@@ -1,18 +1,17 @@
 #include "text_display.h"
+#include "esphome/core/log.h"
+#include "esphome/core/helpers.h"
+#include "esphome/core/hal.h"
 
 namespace esphome {
-namespace text_display{
+namespace fastled_digital_display {
 static const char *const TAG = "text_display";
 
-uint8_t TextDisplay::print(uint8_t pos, const char *str) { 
-    return this->print_core(pos, str); 
-}
+uint8_t TextDisplay::print(uint8_t pos, const char *str) { return this->print_core(pos, str); }
 
-uint8_t TextDisplay::print(const char* str) { 
-    return this->print(0, str); 
-}
+uint8_t TextDisplay::print(const char *str) { return this->print(0, str); }
 
-uint8_t TextDisplay::printf(uint8_t pos, const char* format, ...) {
+uint8_t TextDisplay::printf(uint8_t pos, const char *format, ...) {
   va_list arg;
   va_start(arg, format);
   char buffer[64];
@@ -23,7 +22,7 @@ uint8_t TextDisplay::printf(uint8_t pos, const char* format, ...) {
   return 0;
 }
 
-uint8_t TextDisplay::printf(const char* format, ...) {
+uint8_t TextDisplay::printf(const char *format, ...) {
   va_list arg;
   va_start(arg, format);
   char buffer[64];
@@ -35,7 +34,7 @@ uint8_t TextDisplay::printf(const char* format, ...) {
 }
 
 #ifdef USE_TIME
-uint8_t TextDisplay::strftime(uint8_t pos, const char* format, time::ESPTime time) {
+uint8_t TextDisplay::strftime(uint8_t pos, const char *format, time::ESPTime time) {
   char buffer[64];
   size_t ret = time.strftime(buffer, sizeof(buffer), format);
   if (ret > 0)
@@ -43,10 +42,8 @@ uint8_t TextDisplay::strftime(uint8_t pos, const char* format, time::ESPTime tim
   return 0;
 }
 
-uint8_t TextDisplay::strftime(const char* format, time::ESPTime time) { 
-    return this->strftime(0, format, time); 
-}
+uint8_t TextDisplay::strftime(const char *format, time::ESPTime time) { return this->strftime(0, format, time); }
 #endif
 
-}  // namespace text_display
+}  // namespace fastled_digital_display
 }  // namespace esphome

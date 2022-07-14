@@ -1,13 +1,19 @@
 #pragma once
 
-#include "esphome.h"
+#include "esphome/core/defines.h"
+#include "esphome/core/log.h"
+#include "esphome/core/helpers.h"
+#include "esphome/core/hal.h"
+
+// TODO: This should not be here, just to bypass compiler warning
+// #define USE_TIME
 
 #ifdef USE_TIME
 #include "esphome/components/time/real_time_clock.h"
 #endif
 
 namespace esphome {
-namespace text_display{
+namespace fastled_digital_display {
 
 class TextDisplay {
  public:
@@ -32,5 +38,5 @@ class TextDisplay {
   virtual uint8_t print_core(uint8_t pos, const char *str) = 0;
 };
 
-}  // namespace text_display
+}  // namespace fastled_digital_display
 }  // namespace esphome
