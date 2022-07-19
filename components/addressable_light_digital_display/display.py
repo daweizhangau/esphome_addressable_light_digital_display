@@ -14,9 +14,7 @@ from esphome.const import (
 
 CODEOWNERS = ["@daweizhangau"]
 
-CONF_SEGMENTS = "segments"
-CONF_SEGMENT_LEDS = "segment_leds"
-# CONF_LIGHT = "light"
+CONF_LED_MAP = "led_map"
 
 addressable_light_ns = cg.esphome_ns.namespace("addressable_light_digital_display")
 AddressableLightDisplay = addressable_light_ns.class_(
@@ -25,22 +23,17 @@ AddressableLightDisplay = addressable_light_ns.class_(
 AddressableLightDisplayRef = AddressableLightDisplay.operator("ref")
 
 
-def digits_only(value):
+def led_map(value):
     value = cv.string(value)
     if not value:
         raise cv.Invalid("Value must not be empty")
-    valid_chars = digits
+    valid_chars = "XABCDEFG "
     for char in value:
         if char not in valid_chars:
             raise cv.Invalid(
-                f"IDs must only consist of numbers. The character '{char}' cannot be used"
+                f"led_map must only consist of '{valid_chars}'. The character '{char}' cannot be used"
             )
     return value
-
-
-# def light_schema(value):
-#     # cv.All(light.RGB_LIGHT_SCHEMA)
-#     return value
 
 
 CONFIG_SCHEMA = cv.All(
@@ -50,9 +43,7 @@ CONFIG_SCHEMA = cv.All(
             cv.Required(CONF_ADDRESSABLE_LIGHT_ID): cv.use_id(
                 light.AddressableLightState
             ),
-            cv.Required(CONF_SEGMENTS): digits_only,
-            cv.Required(CONF_SEGMENT_LEDS): digits_only,
-            # cv.Required(CONF_LIGHT): light.RGB_LIGHT_SCHEMA,
+            cv.Required(CONF_LED_MAP): led_map,
             cv.Optional(
                 CONF_UPDATE_INTERVAL, default="16ms"
             ): cv.positive_time_period_milliseconds,
@@ -72,8 +63,7 @@ async def register_external_light(config, display_var):
 
 async def register_display(config, internal_light, display_var):
     cg.add(display_var.set_internal_light(internal_light))
-    cg.add(display_var.set_segments(config[CONF_SEGMENTS]))
-    cg.add(display_var.set_segment_leds(config[CONF_SEGMENT_LEDS]))
+    cg.add(display_var.set_led_map(config[CONF_LED_MAP]))
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
             config[CONF_LAMBDA],
