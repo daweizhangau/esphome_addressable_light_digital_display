@@ -15,6 +15,7 @@ from esphome.const import (
 CODEOWNERS = ["@daweizhangau"]
 
 CONF_LED_MAP = "led_map"
+CONF_REVERSE = "reverse"
 
 addressable_light_ns = cg.esphome_ns.namespace("addressable_light_digital_display")
 AddressableLightDisplay = addressable_light_ns.class_(
@@ -44,6 +45,7 @@ CONFIG_SCHEMA = cv.All(
                 light.AddressableLightState
             ),
             cv.Required(CONF_LED_MAP): led_map,
+            cv.Optional(CONF_REVERSE, default=True): cv.boolean,
             cv.Optional(
                 CONF_UPDATE_INTERVAL, default="16ms"
             ): cv.positive_time_period_milliseconds,
@@ -63,7 +65,10 @@ async def register_external_light(config, display_var):
 
 async def register_display(config, internal_light, display_var):
     cg.add(display_var.set_internal_light(internal_light))
-    cg.add(display_var.set_led_map(config[CONF_LED_MAP]))
+    _led_map = config[CONF_LED_MAP]
+    cg.add(display_var.set_led_map(_led_map))
+    cg.add(display_var.set_max_characters(len(_led_map.split(" "))))
+    cg.add(display_var.set_reverse(config[CONF_REVERSE]))
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
             config[CONF_LAMBDA],

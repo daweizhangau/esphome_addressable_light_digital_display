@@ -6,6 +6,7 @@ namespace esphome {
 namespace addressable_light_digital_display {
 
 const uint8_t UNKNOWN_CHAR = 0b11111111;
+const uint8_t PERIOD_CHAR = 0b10000000;
 
 //
 //      A     |
@@ -31,7 +32,7 @@ const uint8_t ASCII_TO_RAW[] PROGMEM = {
     UNKNOWN_CHAR,  // '+', ord 0x2B
     0b00010000,    // ',', ord 0x2C
     0b00000001,    // '-', ord 0x2D
-    0b10000000,    // '.', ord 0x2E
+    PERIOD_CHAR,   // '.', ord 0x2E
     UNKNOWN_CHAR,  // '/', ord 0x2F
     0b01111110,    // '0', ord 0x30
     0b00110000,    // '1', ord 0x31

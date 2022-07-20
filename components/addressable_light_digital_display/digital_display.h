@@ -26,8 +26,10 @@ class DigitalDisplay : public PollingComponent, public LightOutput, public Print
   void setup_state(LightState *state) override;
   void write_state(LightState *state) override;
 
+  // ========== this =============
   void set_led_map(const std::string &led_map);
-  void set_segment_leds(const std::string &segment_leds);
+  void set_max_characters(const uint8_t max_characters);
+  void set_reverse(const bool reverse);
   void set_internal_light(light::LightState *state);
   void set_external_light(light::LightState *state);
   void set_writer(writer_t &&writer);
@@ -38,6 +40,8 @@ class DigitalDisplay : public PollingComponent, public LightOutput, public Print
   uint8_t print_core(uint8_t pos, const char *str);
   uint8_t buffer_[5] = {0};
   std::string led_map_;
+  uint8_t max_characters_;
+  bool reverse_;
 
   int num_leds_{0};
   LightState *internal_light_state_;
