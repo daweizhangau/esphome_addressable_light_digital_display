@@ -1,4 +1,3 @@
-from string import digits
 import copy
 
 import esphome.codegen as cg
@@ -28,7 +27,7 @@ def led_map(value):
     value = cv.string(value)
     if not value:
         raise cv.Invalid("Value must not be empty")
-    valid_chars = "XABCDEFG "
+    valid_chars = "XABCDEFG.: "
     for char in value:
         if char not in valid_chars:
             raise cv.Invalid(

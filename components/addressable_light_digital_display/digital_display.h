@@ -38,7 +38,7 @@ class DigitalDisplay : public PollingComponent, public LightOutput, public Print
   void display();
   optional<writer_t> writer_{};
   uint8_t print_core(uint8_t pos, const char *str);
-  uint8_t buffer_[5] = {0};
+  bool *led_buffer_;
   std::string led_map_;
   uint8_t max_characters_;
   bool reverse_;

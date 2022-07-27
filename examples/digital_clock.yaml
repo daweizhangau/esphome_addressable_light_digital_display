@@ -1,0 +1,73 @@
+external_components:
+  - source:
+      type: git
+      url: https://github.com/daweizhangau/esphome_addressable_light_digital_display
+      ref: main
+    refresh: 0s
+
+esphome:
+  name: digital-clock-example
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+  encryption:
+    key: "..."
+
+ota:
+  password: "..."
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  ap:
+    ssid: "..."
+    password: "..."
+
+captive_portal:
+
+
+time:
+  - platform: sntp
+    id: sntp_time
+    # Update this time zone string
+    timezone: "AEST-10AEDT-11,M10.1.0/02:00:00,M4.1.0/03:00:00"
+
+light:
+  - platform: fastled_clockless
+    internal: true
+    id: internal_light_state
+    chipset: WS2812B
+    pin: GPIO33
+    num_leds: 90
+    rgb_order: GRB
+
+display:
+  - platform: addressable_light_digital_display
+    id: digital_clock
+    name: Digital Clock
+    light_id: digital_display_light
+    icon: "mdi:clock-digital"
+    restore_mode: ALWAYS_ON
+    default_transition_length: 0s
+    addressable_light_id: internal_light_state
+    #      A
+    #     ---
+    #  F |   | B
+    #     -G-
+    #  E |   | C
+    #     ---
+    #      D
+    led_map: ". CCCDDDEEEFFFAAABBBGGG . CCCDDDEEEFFFAAABBBGGG :: . CCCDDDEEEFFFAAABBBGGG . CCCDDDEEEFFFAAABBBGGG"
+    update_interval: 500ms
+    lambda: |-
+      if (millis() % 1000 < 500)
+        it.strftime("%H:%M", sntp_time->now());
+      else
+        it.strftime("%H %M", sntp_time->now());
