@@ -29,7 +29,7 @@ To build a similar digital display, you need the following components:
 - LED * N: Any model listed [here](https://esphome.io/components/light/fastled.html#supported-chipsets) is supported, for example `WS2812B`. Bigger display may draw higher power, choose higher votage model can reduce current requirement. 
 - A MCU: You need one that ESPHome supported, such as [NodeMCU ESP32](https://esphome.io/devices/nodemcu_esp32.html)
 - Power supply: Please make sure the power supply can cope with the maximum load of LEDs and still be able to power the MCU.
-- A case: You can buy an existing LED clock and retrofit it or create one use 3D printer.
+- A case: Creating a case from scratch takes time and efforts. If you have a 3D printer, you can download and pringt 3D models from [Thingiverse](https://www.thingiverse.com/) or create one yourself. If you don't have 3D printer, you can buy an existing LED digital clock on market (AliExpress), and modify it. 
 - Wires: connect LEDs, MCU and power supply
 - A power connector: to connect power supply to your display
 - A step down voltage converter: (optional) If you choose 12V LED, you need to convert power to 5V for MCU. 
