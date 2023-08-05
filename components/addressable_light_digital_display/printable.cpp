@@ -33,8 +33,7 @@ uint8_t Printable::printf(const char *format, ...) {
   return 0;
 }
 
-#ifdef USE_TIME
-uint8_t Printable::strftime(uint8_t pos, const char *format, time::ESPTime time) {
+uint8_t Printable::strftime(uint8_t pos, const char *format, ESPTime time) {
   char buffer[64];
   size_t ret = time.strftime(buffer, sizeof(buffer), format);
   if (ret > 0)
@@ -42,8 +41,7 @@ uint8_t Printable::strftime(uint8_t pos, const char *format, time::ESPTime time)
   return 0;
 }
 
-uint8_t Printable::strftime(const char *format, time::ESPTime time) { return this->strftime(0, format, time); }
-#endif
+uint8_t Printable::strftime(const char *format, ESPTime time) { return this->strftime(0, format, time); }
 
 }  // namespace addressable_light_digital_display
 }  // namespace esphome
