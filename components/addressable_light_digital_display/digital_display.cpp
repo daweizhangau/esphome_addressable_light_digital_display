@@ -24,7 +24,7 @@ void DigitalDisplay::write_state(light::LightState *state) {
 
 void DigitalDisplay::dump_config() {
   ESP_LOGCONFIG(TAG, "Light display");
-  ESP_LOGCONFIG(TAG, "  Update interval (ms): %d", this->get_update_interval());
+  ESP_LOGCONFIG(TAG, "  Update interval (ms): %lu", this->get_update_interval());
   ESP_LOGCONFIG(TAG, "  Number of LEDs: %d", this->num_leds_);
   ESP_LOGCONFIG(TAG, "  LED MAP: %s", (this->led_map_).c_str());
   ESP_LOGCONFIG(TAG, "  Max characters: %d", this->max_characters_);
