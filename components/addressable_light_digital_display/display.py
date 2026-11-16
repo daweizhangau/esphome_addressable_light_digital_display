@@ -64,9 +64,7 @@ async def register_external_light(config, display_var):
 
 async def register_display(config, internal_light, display_var):
     cg.add(display_var.set_internal_light(internal_light))
-    _led_map = config[CONF_LED_MAP]
-    cg.add(display_var.set_led_map(_led_map))
-    cg.add(display_var.set_max_characters(len(_led_map.split(" "))))
+    cg.add(display_var.set_led_map(config[CONF_LED_MAP]))
     cg.add(display_var.set_reverse(config[CONF_REVERSE]))
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
