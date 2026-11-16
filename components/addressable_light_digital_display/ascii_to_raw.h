@@ -1,6 +1,6 @@
 #pragma once
 
-#include "esphome/core/hal.h"
+#include <stdint.h>
 
 namespace esphome {
 namespace addressable_light_digital_display {
@@ -16,7 +16,7 @@ const uint8_t UNKNOWN_CHAR = 0b11111111;
 //     ---
 //      D   X
 // XABCDEFG
-const uint8_t ASCII_TO_RAW[] PROGMEM = {
+const uint8_t ASCII_TO_RAW[] = {
     0b00000000,    // ' ', ord 0x20
     0b10110000,    // '!', ord 0x21
     0b00100010,    // '"', ord 0x22

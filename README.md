@@ -107,7 +107,7 @@ The display component is exposed as a light to Home Assistant, but it references
 - `led_map`: A string that maps LED to the 7 segments (shown below) and special symbols. From left to right, the map string starts from the first LED to the last LED. Each character in this string map to a LED, space is used as a delimiter. `A` to `G` is used to map a LED to corresponding segment of 7-segment, `.` and `:` are used to map corresponding symbols. These characters can be repeated. For example, if 3 LEDs are used to represent Segment B and 3 are used for Segment A, then map string is `BBBAAA`.
 - `reverse`: (Optional) Content order. If true, the first led maps to right most character of content string, otherwise, the first LED maps the left most character. True, by default.
 - `lambda`: C++ code to formulate display content. 
-For more information about print API, please read [printable.h](components/addressable_light_digital_display/printable.h). 
+For more information about print API, please read [digital_display.h](components/addressable_light_digital_display/digital_display.h). 
 For more information about suported characters, please read [ascii_to_raw.h](components/addressable_light_digital_display/ascii_to_raw.h)
 To print time, [`time` component](https://esphome.io/components/time.html) is required.
 
